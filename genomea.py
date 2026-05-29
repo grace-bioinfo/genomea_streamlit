@@ -1,0 +1,120 @@
+import os
+import tempfile
+import streamlit as st
+from pipeline import run_pipeline
+from dotenv import load_dotenv
+from Bio import SeqIO
+
+load_dotenv()
+
+# add your title
+st.set_page_config(
+
+    page_title = "GenomEA",
+    layout = "wide"
+)
+
+st.title("GenomEA")
+st.markdown("### Genomic analysis for East Africa")
+st.divider()
+st.write("GenomEA is a platform for sequencing,  especially for scientists in East Africa. It enables sequencing analysis, BLAST searches, multiple sequence alignment and functional annotation through a simple and accessible interface. It is AI powered, bult with East A frica in mind.")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("""
+        <div style="background-color:#253347; padding:20px; border-radius:5px; height:180px">
+            <h3>BLAST Search</h3>
+            <p>Find similar sequences across species and databases.</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("""
+        <div style="background-color:#253347; padding:20px; border-radius:5px; height:180px">
+            <h3>Sequence Alignment</h3>
+            <p>Align multiple sequences to identify conserved regions.</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+with col3:
+    st.markdown("""
+        <div style="background-color:#253347; padding:20px; border-radius:5px; height:180px">
+            <h3>Domain Annotation</h3>
+            <p>Identify functional domains and biological significance.</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+
+st.divider()
+
+st.header("Analyze Your Sequence")
+# sequence input
+
+input_method = st.radio("Input method", ["Paste sequence", "Upload file"])
+
+if input_method == "Paste sequence":
+    sequence = st.text_area("Paste your sequence here", height = 150)
+else:
+    uploaded_file = st.file_uploader("Upload file", type=["fasta", "fa", "txt", "gb", "gbk"])
+
+    if uploaded_file:
+    # Check file size (limit to 5MB)
+        if uploaded_file.size > 5 * 1024 * 1024:
+            st.error("File too large! Maximum file size is 5MB.")
+            uploaded_file = None
+        else:
+            st.success("File uploaded successfully!")
+
+# analysis type selector
+analysis_type = st.selectbox(
+    "Select Analysis Type",
+    ["All", "BLAST Search", "Alignment", "Phylogenetic Tree", "Identity Matrix", "Domain Annotation"]
+)
+
+# submit button
+if st.button("Analyze", key="analyze_btn"):
+    with st.spinner("GenomEA is analysing your sequence...this may take a while"):
+        if input_method == "Upload file" and uploaded_file:
+            # save uploaded file to emp location
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".fasta") as tmp:
+                tmp.write(uploaded_file.getvalue())
+                temp_path = tmp.name
+
+                with open(temp_path, "wb") as f:
+                     f.write(uploaded_file.getbuffer())
+
+                # now run the pipeline
+
+                results = run_pipeline(temp_path, input_type="file")
+                # store results in session state
+                st.session_state.results = results
+                st.success("Analysis complete! Please go to Results page.")
+
+        elif input_method == "Paste sequence" and sequence:
+            results = run_pipeline(sequence, input_type="text")
+            st.session_state.results = results
+            st.success("Analysis complete! Please go to Results page.")
+
+        else:
+            st.error("Please provide a sequence!")
+
+
+# add divider and results header- this was a place holder and we no longer need it
+# st.divider()
+# st.header("Results")
+# st.write("Your results will appear here after analysis.")
+
+# add sidebar
+with st.sidebar:
+    st.title("GenomEA")
+    st.write("Navigation")
+    st.markdown("- Home")
+    st.markdown("- Analysis")
+    st.markdown("- About")
+    st.divider()
+    st.write("Decode")
+
+
+    
+

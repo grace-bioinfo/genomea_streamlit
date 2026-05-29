@@ -1,0 +1,269 @@
+import os
+import json
+import time
+
+from Bio import Entrez, SeqIO
+from Bio.Blast import NCBIWWW, NCBIXML
+from openai import OpenAI
+import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+NVIDIA_KEY=os.environ.get("GKN_NVIDIA_KEY")
+Entrez.email=os.environ.get("ENTREZ_MY_EMAIL")
+
+nvidia_client = OpenAI(
+    base_url="https://integrate.api.nvidia.com/v1",
+    api_key=NVIDIA_KEY
+)
+
+# STEP 1
+def get_sequence(input_data, input_type="text", file_format="fasta"):
+        
+        if input_type == "file":
+            record = list(SeqIO.parse(input_data, file_format))
+    
+            if len(record) == 0:
+                 raise ValueError("No sequences found in the file.")
+            record = record[0]
+            return str(record.seq), record.id, record.description
+    
+        else:
+            return input_data, "unknown", "user input sequence"
+    
+def run_blast(sequence, program="blastp", database="nr"):
+    print("Running BLAST... this may take a few minutes")
+    
+    blast_process = NCBIWWW.qblast(
+        program=program,
+        database=database,
+        sequence=sequence
+    )
+    
+    with open("blast_results.xml", "w") as f:
+        f.write(blast_process.read())
+    
+    print("BLAST complete!")
+    return "blast_results.xml"
+
+def filter_results(blast_file, evalue_threshold=0.05, identity_threshold=95):
+    filtered = []
+    
+    with open(blast_file) as f:
+        blast_records = list(NCBIXML.parse(f))
+    
+    for blast_record in blast_records:
+        for alignment in blast_record.alignments:
+            for hsp in alignment.hsps:
+                identity_percent = (hsp.identities / hsp.align_length) * 100
+                if hsp.expect < evalue_threshold and identity_percent > identity_threshold:
+                    filtered.append({
+                        "title": alignment.title,
+                        "accession": alignment.accession,
+                        "score": hsp.score,
+                        "evalue": hsp.expect,
+                        "identity_percent": round(identity_percent, 2),
+                        "gaps": hsp.gaps
+                    })
+    # Save filtered results to file
+    with open("filtered_summary.txt", "w") as f:
+        f.write("FILTERED BLAST RESULTS SUMMARY\n")
+        f.write("=" * 40 + "\n")
+        f.write("Total significant hits: " + str(len(filtered)) + "\n\n")
+    
+        for hit in filtered:
+            f.write("Title: " + hit["title"] + "\n")
+            f.write("Accession: " + hit["accession"] + "\n")
+            f.write("Score: " + str(hit["score"]) + "\n")
+            f.write("E-value: " + str(hit["evalue"]) + "\n")
+            f.write("Identity %: " + str(hit["identity_percent"]) + "\n")
+            f.write("Gaps: " + str(hit["gaps"]) + "\n")
+            f.write("-" * 40 + "\n")
+
+
+    print("Filtered hits: " + str(len(filtered)))
+    return filtered
+
+def fetch_homologs(filtered_results):
+    ids = [hit["accession"] for hit in filtered_results]
+    
+    print("Fetching " + str(len(ids)) + " homolog sequences...")
+    
+    handle = Entrez.efetch(
+        db="protein",
+        id=ids,
+        rettype="fasta",
+        retmode="text"
+    )
+    
+    with open("homologs.fasta", "w") as f:
+        f.write(handle.read())
+    
+    print("Homologs saved!")
+    return "homologs.fasta"
+
+def run_alignment(homologs_file):
+    print("Running alignment...")
+    
+    with open(homologs_file) as f:
+        fasta_data = f.read()
+    
+    response = requests.post(
+        "https://www.ebi.ac.uk/Tools/services/rest/clustalo/run",
+        data={
+            "email": os.environ.get("ENTREZ_MY_EMAIL"),
+            "sequence": fasta_data,
+            "format": "fasta"
+        },
+        verify=False
+    )
+    
+    job_id = response.text
+    print("Job ID: " + job_id)
+    
+    # Wait for job to finish
+    while True:
+        status = requests.get(
+            "https://www.ebi.ac.uk/Tools/services/rest/clustalo/status/" + job_id,
+            verify=False
+        )
+        print("Status: " + status.text)
+        if status.text == "FINISHED":
+            break
+        time.sleep(10)
+    
+    # Fetch results
+    alignment = requests.get(
+        "https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/" + job_id + "/fa",
+        verify=False
+    )
+    tree = requests.get(
+        "https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/" + job_id + "/phylotree",
+        verify=False
+    )
+    pim = requests.get(
+        "https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/" + job_id + "/pim",
+        verify=False
+    )
+    
+    with open("aligned_sequences.fasta", "w") as f:
+        f.write(alignment.text)
+    with open("phylogenetic_tree.ph", "w") as f:
+        f.write(tree.text)
+    with open("percent_identity.pim", "w") as f:
+        f.write(pim.text)
+    
+    print("Alignment complete!")
+    return "aligned_sequences.fasta", "phylogenetic_tree.ph", "percent_identity.pim"
+
+
+def annotate_domains(uniprot_id):
+    print("Fetching domain annotation...")
+    
+    url = "https://rest.uniprot.org/uniprotkb/" + uniprot_id + ".json"
+    response = requests.get(url, verify=False)
+    data = response.json()
+    
+    with open("domain_annotation.json", "w") as f:
+        json.dump(data, f)
+    
+    # Extract key info
+    domains = []
+    if "features" in data:
+        for feature in data["features"]:
+            if feature["type"] in ["Domain", "Region", "Binding site", "Active site"]:
+                domains.append({
+                    "type": feature["type"],
+                    "description": feature.get("description", ""),
+                    "start": feature["location"]["start"]["value"],
+                    "end": feature["location"]["end"]["value"]
+                })
+    
+    print("Domains found: " + str(len(domains)))
+    return domains
+
+#  AI summary
+
+def ai_summary(sequence, blast_results, domains, question="Summarize these genomic analysis results in the context of East African research."):
+    # Format results for AI
+    blast_summary = json.dumps(blast_results[:5], indent=2)
+    domain_summary = json.dumps(domains, indent=2)
+    
+    prompt = f"""
+    Sequence Analysis Results:
+    
+    Top BLAST hits:
+    {blast_summary}
+    
+    Protein domains:
+    {domain_summary}
+    
+    Question: {question}
+    """
+    
+    completion = nvidia_client.chat.completions.create(
+        model="meta/llama-3.1-8b-instruct",
+        messages=[
+            {"role": "system", "content": "You are GenomEA, an AI assistant specializing in East African genomics research."},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.2,
+        top_p=0.7,
+        max_tokens=1024,
+        stream=False
+    )
+    
+    return completion.choices[0].message.content
+
+def run_pipeline(input_data, input_type="text", file_format="fasta", uniprot_id="P51587"):
+    print("Starting GenomEA pipeline...")
+
+    
+    # Step 1
+    
+    sequence, seq_id, description = get_sequence(input_data, input_type, file_format)
+    time.sleep(1)
+    
+    # Step 2
+    blast_file = run_blast(sequence)
+    time.sleep(2)
+    
+    # Step 3
+    filtered = filter_results(blast_file)
+    time.sleep(1)
+    
+    # Step 4
+    homologs_file = fetch_homologs(filtered)
+    time.sleep(2)
+    
+    # Step 5
+    alignment_file, tree_file, pim_file = run_alignment(homologs_file)
+    time.sleep(1)
+    
+    # Step 6
+    domains = annotate_domains(uniprot_id)
+    time.sleep(1)
+    
+    # Step 7
+    summary = ai_summary(sequence, filtered, domains)
+    
+    print("Pipeline complete!")
+    return {
+        "sequence_id": seq_id,
+        "blast_results": filtered,
+        "homologs": homologs_file,
+        "alignment": alignment_file,
+        "tree": tree_file,
+        "pim": pim_file,
+        "domains": domains,
+        "ai_summary": summary
+    }
+
+
+    if __name__ == "__main__":
+        results = run_pipeline("seq1.fasta", input_type="file")
+        print(results)
+
+
