@@ -11,10 +11,18 @@ with st.spinner("Loading GenomEA..."):
 
 # Simple password protection
 password = st.text_input("Enter access password", type="password")
-if password != os.environ.get("APP_PASSWORD"):
+expected_password = os.environ.get("APP_PASSWORD")
+
+if not password:
+    st.stop()
+
+if password != expected_password:
     st.error("Incorrect password")
     st.stop()
-    
+
+st.success("Access granted")
+st.write("Protected app content goes here.")
+
 # add your title
 st.set_page_config(
 
