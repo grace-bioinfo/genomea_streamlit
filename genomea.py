@@ -17,7 +17,7 @@ st.set_page_config(
 st.title("GenomEA")
 st.markdown("### Genomic analysis for East Africa")
 st.divider()
-st.write("GenomEA is a platform for sequencing,  especially for scientists in East Africa. It enables sequencing analysis, BLAST searches, multiple sequence alignment and functional annotation through a simple and accessible interface. It is AI powered, bult with East A frica in mind.")
+st.write("GenomEA is a bioinformatics platform built for East African researchers. Upload your protein sequence and get a complete analysis; BLAST search, sequence alignment, phylogenetic tree, domain annotation and an AI-powered summary grounded in East African genomics research. Built on local data, for local science. Starting in Kenya and scaling across the continent.")
 
 col1, col2, col3 = st.columns(3)
 

@@ -1,6 +1,8 @@
 import os
 import json
 import time
+import uuid
+
 
 from Bio import Entrez, SeqIO
 from Bio.Blast import NCBIWWW, NCBIXML
@@ -219,7 +221,16 @@ def ai_summary(sequence, blast_results, domains, question="Summarize these genom
 
 def run_pipeline(input_data, input_type="text", file_format="fasta", uniprot_id="P51587"):
     print("Starting GenomEA pipeline...")
-
+    
+    # Generate unique ID for this session
+    session_id = str(uuid.uuid4())[:8]
+    
+    # All files get unique names
+    blast_file = "blast_" + session_id + ".xml"
+    homologs_file = "homologs_" + session_id + ".fasta"
+    alignment_file = "aligned_" + session_id + ".fasta"
+    tree_file = "tree_" + session_id + ".ph"
+    pim_file = "pim_" + session_id + ".pim"
     
     # Step 1
     
