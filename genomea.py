@@ -1,11 +1,13 @@
 import os
 import tempfile
-import streamlit as st
-from pipeline import run_pipeline
-from dotenv import load_dotenv
 from Bio import SeqIO
-
-load_dotenv()
+import streamlit as st
+# Show loading state
+with st.spinner("Loading GenomEA..."):
+    # Heavy imports inside here
+    from pipeline import run_pipeline
+    from dotenv import load_dotenv
+    load_dotenv()
 
 # add your title
 st.set_page_config(

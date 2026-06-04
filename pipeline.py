@@ -227,6 +227,7 @@ def run_pipeline(input_data, input_type="text", file_format="fasta", uniprot_id=
     
     # All files get unique names
     blast_file = "blast_" + session_id + ".xml"
+    filter_results = "filtered_" + session_id + ".txt"
     homologs_file = "homologs_" + session_id + ".fasta"
     alignment_file = "aligned_" + session_id + ".fasta"
     tree_file = "tree_" + session_id + ".ph"
