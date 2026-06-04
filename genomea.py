@@ -9,6 +9,12 @@ with st.spinner("Loading GenomEA..."):
     from dotenv import load_dotenv
     load_dotenv()
 
+# Simple password protection
+password = st.text_input("Enter access password", type="password")
+if password != os.environ.get("APP_PASSWORD"):
+    st.error("Incorrect password")
+    st.stop()
+    
 # add your title
 st.set_page_config(
 

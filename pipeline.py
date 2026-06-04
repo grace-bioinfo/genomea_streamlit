@@ -12,14 +12,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
-NVIDIA_KEY=os.environ.get("GKN_NVIDIA_KEY")
 Entrez.email=os.environ.get("ENTREZ_MY_EMAIL")
 
-nvidia_client = OpenAI(
-    base_url="https://integrate.api.nvidia.com/v1",
-    api_key=NVIDIA_KEY
-)
 
 # STEP 1
 def get_sequence(input_data, input_type="text", file_format="fasta"):
@@ -189,7 +183,14 @@ def annotate_domains(uniprot_id):
 #  AI summary
 
 def ai_summary(sequence, blast_results, domains, question="Summarize these genomic analysis results in the context of East African research."):
+    NVIDIA_KEY=os.environ.get("GKN_NVIDIA_KEY")
     # Format results for AI
+
+    nvidia_client = OpenAI(
+        base_url="https://integrate.api.nvidia.com/v1",
+        api_key=NVIDIA_KEY
+    )
+
     blast_summary = json.dumps(blast_results[:5], indent=2)
     domain_summary = json.dumps(domains, indent=2)
     
