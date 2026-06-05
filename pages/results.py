@@ -3,7 +3,7 @@ import pandas as pd
 import json
 
 st.title("Results")
-st.write("Your analysis results will appear here. Thank you, have a lovely day.")
+st.write("Your analysis results will appear here.")
 # check if results exist
 
 if "results" not in st.session_state:
