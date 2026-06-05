@@ -10,10 +10,7 @@ with st.spinner("Loading GenomEA..."):
     from dotenv import load_dotenv
     load_dotenv()
 
-# Simple password protection
-import os
-import hmac
-import streamlit as st
+# LOGIN
 
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
@@ -33,17 +30,18 @@ if not st.session_state.authenticated:
         st.error("Incorrect password")
         st.stop()
 
-# Everything below this line is only shown after login.
 st.success("Access granted")
 
 # add your title
 st.set_page_config(
 
     page_title = "GenomEA",
-    layout = "wide"
+    layout = "wide",
+    page_icon= "genomea_logo.png"
 )
 
 st.title("GenomEA")
+
 st.markdown("### Genomic analysis for East Africa")
 st.divider()
 st.write("GenomEA is a bioinformatics platform built for East African researchers. Upload your protein sequence and get a complete analysis; BLAST search, sequence alignment, phylogenetic tree, domain annotation and an AI-powered summary grounded in East African genomics research. Built on local data, for local science. Starting in Kenya and scaling across the continent.")
