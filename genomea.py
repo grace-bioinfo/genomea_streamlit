@@ -1,5 +1,6 @@
 import os
 import tempfile
+import hmac
 from Bio import SeqIO
 import streamlit as st
 # Show loading state
@@ -10,18 +11,30 @@ with st.spinner("Loading GenomEA..."):
     load_dotenv()
 
 # Simple password protection
-password = st.text_input("Enter access password", type="password")
-expected_password = os.environ.get("APP_PASSWORD")
+import os
+import hmac
+import streamlit as st
 
-if not password:
-    st.stop()
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
 
-if password != expected_password:
-    st.error("Incorrect password")
-    st.stop()
+if not st.session_state.authenticated:
+    password = st.text_input("Enter access password", type="password")
+    expected_password = os.environ.get("APP_PASSWORD")
 
+    if not password:
+        st.stop()
+
+    if hmac.compare_digest(password, expected_password or ""):
+        st.session_state.authenticated = True
+        st.rerun()
+        
+    else:
+        st.error("Incorrect password")
+        st.stop()
+
+# Everything below this line is only shown after login.
 st.success("Access granted")
-st.write("Protected app content goes here.")
 
 # add your title
 st.set_page_config(
