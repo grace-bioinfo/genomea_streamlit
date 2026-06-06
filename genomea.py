@@ -10,6 +10,7 @@ with st.spinner("Loading GenomEA..."):
     from dotenv import load_dotenv
     load_dotenv()
 
+
 # LOGIN
 
 if "authenticated" not in st.session_state:
