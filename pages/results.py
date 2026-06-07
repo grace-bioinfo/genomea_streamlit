@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import json
+import os
 
 with st.spinner("Result page loading..."):
     from pipeline import ai_summary
@@ -38,15 +39,25 @@ else:
             df.to_csv(index=False),
             "blast_results.csv"
         )
+
+
+    
+
     with tab3:
         st.subheader("Homolog Sequences")
-        with open(results["homologs"]) as f:
-            st.code(f.read()[:1000])
-        st.download_button(
-            "Download Homologs(complete file)",
-            open(results["homologs"]).read(),
-            "homologs.fasta"
-    )
+    
+        if not results["homologs"] or not os.path.exists(results["homologs"]):
+            st.warning("Homolog sequences unavailable — check logs for details.")
+        else:
+            with open(results["homologs"]) as f:
+                st.code(f.read()[:1000])
+
+            st.download_button(
+                "Download Homologs (complete file)",
+                open(results["homologs"]).read(),
+                "homologs.fasta"
+            )
+
 
     with tab4:
         st.subheader("Aligned Sequences")
