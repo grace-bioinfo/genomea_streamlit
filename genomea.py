@@ -6,7 +6,7 @@ import streamlit as st
 # Show loading state
 with st.spinner("Loading GenomEA..."):
     # Heavy imports inside here
-    from pipeline import run_pipeline
+    from pipeline import run_pipeline, get_sequence, detect_sequence_type
     from dotenv import load_dotenv
     load_dotenv()
 
@@ -84,7 +84,7 @@ input_method = st.radio("Input method", ["Paste sequence", "Upload file"])
 if input_method == "Paste sequence":
     sequence = st.text_area("Paste your sequence here", height = 150)
 else:
-    uploaded_file = st.file_uploader("Upload file", type=["fasta", "fa", "txt", "gb", "gbk"])
+    uploaded_file = st.file_uploader("Upload file", type=["fasta", "fa", "fastq", "gb", "gbk", "gp"])
 
     if uploaded_file:
     # Check file size (limit to 5MB)
@@ -101,26 +101,47 @@ analysis_type = st.selectbox(
 )
 
 # submit button
+if input_method == "Upload file" and uploaded_file:
+    # auto detect sequence type before button is clicked
+    original_ext = os.path.splitext(uploaded_file.name)[1]
+    with tempfile.NamedTemporaryFile(delete=False, suffix=original_ext) as tmp:
+        tmp.write(uploaded_file.getvalue())
+        temp_path = tmp.name
+
+    sequence, seq_id, description = get_sequence(temp_path, input_type="file")
+    seq_type = detect_sequence_type(sequence)
+    default_program = "blastn" if seq_type == "nucleotide" else "blastp"
+
+    program = st.selectbox(
+        "BLAST Program",
+        ["blastn", "blastp", "blastx", "tblastn", "tblastx"],
+        index=["blastn", "blastp", "blastx", "tblastn", "tblastx"].index(default_program)
+    )
+
+    st.info(f"Detected: {seq_type} sequence → {default_program} selected")
+
+elif input_method == "Paste sequence" and sequence:
+    seq_type = detect_sequence_type(sequence)
+    default_program = "blastn" if seq_type == "nucleotide" else "blastp"
+
+    program = st.selectbox(
+        "BLAST Program",
+        ["blastn", "blastp", "blastx", "tblastn", "tblastx"],
+        index=["blastn", "blastp", "blastx", "tblastn", "tblastx"].index(default_program)
+    )
+
+    st.info(f"Detected: {seq_type} sequence → {default_program} selected")
+
 if st.button("Analyze", key="analyze_btn"):
-    with st.spinner("GenomEA is analysing your sequence...this may take a while"):
+    with st.spinner("GenomEA is analysing your sequence... this may take a while"):
+
         if input_method == "Upload file" and uploaded_file:
-            # save uploaded file to emp location
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".fasta") as tmp:
-                tmp.write(uploaded_file.getvalue())
-                temp_path = tmp.name
-
-                with open(temp_path, "wb") as f:
-                     f.write(uploaded_file.getbuffer())
-
-                # now run the pipeline
-
-                results = run_pipeline(temp_path, input_type="file")
-                # store results in session state
-                st.session_state.results = results
-                st.success("Analysis complete! Please go to Results page.")
+            results = run_pipeline(temp_path, input_type="file", program=program)
+            st.session_state.results = results
+            st.success("Analysis complete! Please go to Results page.")
 
         elif input_method == "Paste sequence" and sequence:
-            results = run_pipeline(sequence, input_type="text")
+            results = run_pipeline(sequence, input_type="text", program=program)
             st.session_state.results = results
             st.success("Analysis complete! Please go to Results page.")
 
