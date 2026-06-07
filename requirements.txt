@@ -1,7 +1,6 @@
-Bio==1.8.3
-biopython==1.86
-openai==2.41.0
-pandas==3.0.3
-python-dotenv==1.2.2
-Requests==2.34.2
-streamlit==1.57.0
+biopython
+openai
+python-dotenv
+pandas==2.2.3
+streamlit
+requests
