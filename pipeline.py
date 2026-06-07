@@ -12,7 +12,6 @@ from dotenv import load_dotenv
 import logging 
 import streamlit as st
 
-
 load_dotenv()
 
 logging.basicConfig(
@@ -26,15 +25,89 @@ logger = logging.getLogger(__name__)
 Entrez.email=os.environ.get("ENTREZ_MY_EMAIL")
 
 
+
+
+# blast types option code
+def detect_sequence_type(sequence):
+    nucleotide_chars = set("ATCGNatcgn")
+    seq_chars = set(sequence[:100])  # check first 100 characters
+    
+    if seq_chars.issubset(nucleotide_chars):
+        return "nucleotide"
+    else:
+        return "protein"
+    
+
+# utility function
+def clean_accession(accession):
+    # handles formats like sp|P04264|K2C1_HUMAN or gi|12345678|ref|NP_001230|
+    if "|" in accession:
+        parts = accession.split("|")
+        # uniprot accessions are usually the second part
+        for part in parts:
+            part = part.strip()
+            if len(part) == 6 or len(part) == 10:  # uniprot accession length
+                return part
+        return parts[1]  # fallback to second part
+    return accession
+
+
+
+
+def map_to_uniprot(accession):
+    logger.info(f"Mapping accession to UniProt | accession: {accession}")
+    try:
+        # submit mapping job
+        response = requests.post(
+            "https://rest.uniprot.org/idmapping/run",
+            data={"from": "EMBL-GenBank-DDBJ_CDS", "to": "UniProtKB", "ids": accession},
+            verify=False
+        )
+        job_id = response.json()["jobId"]
+
+        # poll for result
+        for _ in range(10):
+            time.sleep(3)
+            result = requests.get(
+                f"https://rest.uniprot.org/idmapping/results/{job_id}",
+                verify=False
+            )
+            data = result.json()
+            if "results" in data and len(data["results"]) > 0:
+                uniprot_id = data["results"][0]["to"]["primaryAccession"]
+                logger.info(f"Mapped {accession} → {uniprot_id}")
+                return uniprot_id
+
+        logger.warning(f"No UniProt mapping found for: {accession}")
+        return None
+
+    except Exception as e:
+        logger.error(f"UniProt mapping failed | {e}")
+        return None
+
+
+
+
 # STEP 1
 @st.cache_data
 def get_sequence(input_data, input_type="text", file_format="fasta"):
         
         if input_type == "file":
+            if input_data.endswith(".gb") or input_data.endswith(".gbk"):
+                file_format = "genbank"
+            elif input_data.endswith(".fasta") or input_data.endswith(".fa"):
+                file_format = "fasta"
+            elif input_data.endswith(".fastq"):
+                file_format = "fastq"
+            elif input_data.endswith(".gp"):
+                file_format = "genbank"  # BioPython parses genpept as "genbank" format
+
             record = list(SeqIO.parse(input_data, file_format))
     
             if len(record) == 0:
-                 raise ValueError("No sequences found in the file.")
+                raise ValueError("No sequences found in the file.")
+                
+
             record = record[0]
             return str(record.seq), record.id, record.description
     
@@ -320,7 +393,7 @@ def ai_summary(sequence, blast_results, domains, question="Summarize these genom
     
     return completion.choices[0].message.content
 
-def run_pipeline(input_data, input_type="text", file_format="fasta", uniprot_id="P51587"):
+def run_pipeline(input_data, input_type="text", file_format="fasta", program="blastp", uniprot_id="P51587"):
     print("Starting GenomEA pipeline...")
     
     # Generate unique ID for this session
@@ -340,12 +413,19 @@ def run_pipeline(input_data, input_type="text", file_format="fasta", uniprot_id=
     time.sleep(1)
     
     # Step 2
-    blast_file = run_blast(sequence)
+    blast_file = run_blast(sequence, program=program)
     time.sleep(2)
     
     # Step 3
     filtered = filter_results(blast_file)
     time.sleep(1)
+
+    # extract uniprot id from top blast hit
+    # clean and extract uniprot id from top blast hit
+    raw_accession = filtered[0]["accession"] if filtered else None
+    uniprot_id = map_to_uniprot(raw_accession) if raw_accession else "P51587"
+    if uniprot_id is None:
+        uniprot_id = "P51587"  # fallback if mapping fails
     
     # Step 4
     homologs_file = fetch_homologs(filtered)
