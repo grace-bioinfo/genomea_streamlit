@@ -12,3 +12,53 @@
 2026-06-07 03:27:20,072 - INFO - Domain annotation started | uniprot_id: P51587
 2026-06-07 03:27:21,781 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 12
 2026-06-07 03:27:32,626 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-07 09:34:55,820 - INFO - BLAST started | program: blastp | database: nr
+2026-06-07 09:34:57,716 - ERROR - BLAST failed | program: blastp | database: nr | Error message from NCBI: Message ID#24 Error: Failed to read the Blast query: Nucleotide FASTA provided for protein sequence
+2026-06-07 09:34:59,727 - INFO - Filtering started | file: None | evalue threshold: 0.05 | identity threshold: 95%
+2026-06-07 09:34:59,727 - ERROR - Filtering failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-06-07 09:35:00,732 - INFO - Fetching homologs started | 0
+2026-06-07 09:35:00,732 - WARNING - fetch_homologs called, no ids to fetch
+2026-06-07 09:35:02,748 - INFO - Alignment started | file: None
+2026-06-07 09:35:02,748 - ERROR - Alignment failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-06-07 09:35:13,099 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-07 10:43:48,552 - INFO - BLAST started | program: blastp | database: nr
+2026-06-07 10:44:53,092 - INFO - BLAST complete
+2026-06-07 10:44:59,181 - INFO - Domain annotation started | uniprot_id: QMS45324
+2026-06-07 10:45:00,539 - ERROR - UniProt request failed | uniprot_id: QMS45324 | status code: 400
+2026-06-07 10:45:06,150 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-07 11:16:06,872 - INFO - BLAST started | program: blastp | database: nr
+2026-06-07 11:16:08,623 - ERROR - BLAST failed | program: blastp | database: nr | Error message from NCBI: Message ID#24 Error: Failed to read the Blast query: Nucleotide FASTA provided for protein sequence
+2026-06-07 11:16:22,503 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-07 11:25:42,100 - INFO - BLAST started | program: blastn | database: nr
+2026-06-07 11:26:46,434 - INFO - BLAST complete
+2026-06-07 11:26:57,792 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-07 11:36:28,212 - INFO - BLAST started | program: blastp | database: nr
+2026-06-07 11:38:37,633 - ERROR - BLAST failed | program: blastp | database: nr | <urlopen error [WinError 10054] An existing connection was forcibly closed by the remote host>
+2026-06-07 11:38:45,115 - INFO - Retrying request to /chat/completions in 0.389237 seconds
+2026-06-07 11:38:45,670 - INFO - Retrying request to /chat/completions in 0.858139 seconds
+2026-06-07 11:40:35,126 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-07 11:44:35,554 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-07 12:00:48,339 - INFO - BLAST started | program: blastp | database: nr
+2026-06-07 12:01:53,031 - INFO - BLAST complete
+2026-06-07 12:01:55,038 - INFO - Filtering started | file: blast_results.xml | evalue threshold: 0.05 | identity threshold: 95%
+2026-06-07 12:01:55,083 - INFO - Filtering complete | 31
+2026-06-07 12:01:56,098 - INFO - Fetching homologs started | 31
+2026-06-07 12:01:57,844 - INFO - Homologs fetched and saved | 31 sequences | file: homologs.fasta
+2026-06-07 12:01:59,855 - INFO - Alignment started | file: homologs.fasta
+2026-06-07 12:02:02,743 - INFO - Alignment job submitted | job_id: clustalo-R20260607-100201-0446-14262548-p1m
+2026-06-07 12:02:03,666 - INFO - Alignment status | job_id: clustalo-R20260607-100201-0446-14262548-p1m | status: RUNNING
+2026-06-07 12:02:14,846 - INFO - Alignment status | job_id: clustalo-R20260607-100201-0446-14262548-p1m | status: FINISHED
+2026-06-07 12:02:18,256 - INFO - Alignment complete | job_id: clustalo-R20260607-100201-0446-14262548-p1m | files saved: aligned_sequences.fasta, phylogenetic_tree.ph, percent_identity.pim
+2026-06-07 12:02:19,267 - INFO - Domain annotation started | uniprot_id: QMS45324
+2026-06-07 12:02:20,322 - ERROR - UniProt request failed | uniprot_id: QMS45324 | status code: 400
+2026-06-07 12:02:27,720 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-07 12:17:43,558 - INFO - BLAST started | program: blastn | database: nr
+2026-06-07 12:18:49,736 - INFO - BLAST complete
+2026-06-07 12:19:00,228 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-07 12:30:30,910 - INFO - Domain annotation started | uniprot_id: QMS45324
+2026-06-07 12:30:32,076 - ERROR - UniProt request failed | uniprot_id: QMS45324 | status code: 400
+2026-06-07 12:40:24,402 - INFO - Mapping accession to UniProt | accession: QMS45324
+2026-06-07 12:41:05,367 - WARNING - No UniProt mapping found for: QMS45324
+2026-06-07 12:41:08,410 - INFO - Domain annotation started | uniprot_id: P51587
+2026-06-07 12:41:10,011 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 12
+2026-06-07 12:41:18,171 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
