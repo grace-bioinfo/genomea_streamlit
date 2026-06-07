@@ -1,0 +1,14 @@
+2026-06-07 02:38:49,542 - INFO - BLAST started | program: blastp | database: nr
+2026-06-07 02:40:54,333 - INFO - BLAST complete
+2026-06-07 03:16:46,962 - INFO - Filtering started | file: blast_results.xml | evalue threshold: 0.05 | identity threshold: 95%
+2026-06-07 03:16:47,169 - INFO - Filtering complete | 31
+2026-06-07 03:26:51,929 - INFO - Fetching homologs started | 31
+2026-06-07 03:26:54,330 - INFO - Homologs fetched and saved | 31 sequences | file: homologs.fasta
+2026-06-07 03:26:56,347 - INFO - Alignment started | file: homologs.fasta
+2026-06-07 03:27:00,080 - INFO - Alignment job submitted | job_id: clustalo-R20260607-012657-0982-35232101-p1m
+2026-06-07 03:27:02,110 - INFO - Alignment status | job_id: clustalo-R20260607-012657-0982-35232101-p1m | status: QUEUED
+2026-06-07 03:27:13,993 - INFO - Alignment status | job_id: clustalo-R20260607-012657-0982-35232101-p1m | status: FINISHED
+2026-06-07 03:27:19,036 - INFO - Alignment complete | job_id: clustalo-R20260607-012657-0982-35232101-p1m | files saved: aligned_sequences.fasta, phylogenetic_tree.ph, percent_identity.pim
+2026-06-07 03:27:20,072 - INFO - Domain annotation started | uniprot_id: P51587
+2026-06-07 03:27:21,781 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 12
+2026-06-07 03:27:32,626 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"

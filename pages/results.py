@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import json
 
+with st.spinner("Result page loading..."):
+    from pipeline import ai_summary
+
 st.title("Results")
 st.write("Your analysis results will appear here.")
 # check if results exist
@@ -96,7 +99,6 @@ if prompt := st.chat_input("Ask about your results..."):
     # Get AI response
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            from pipeline import ai_summary
             response = ai_summary("", [], [], question=prompt)
             st.write(response)
             st.session_state.messages.append({"role": "assistant", "content": response})

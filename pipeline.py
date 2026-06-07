@@ -114,7 +114,6 @@ def filter_results(blast_file, evalue_threshold=0.05, identity_threshold=95):
     except FileNotFoundError as e:
         logger.error(f"BLAST file not found: {blast_file} | {e}")
         return []
-    
     except Exception as e:
         logger.error(f"Filtering failed | file: {blast_file} | {e}")
         return []
@@ -125,8 +124,7 @@ def filter_results(blast_file, evalue_threshold=0.05, identity_threshold=95):
 
 @st.cache_data
 def fetch_homologs(filtered_results):
-    logger.info(f"Fetching homologs started | {len(ids)}")
-    ids = [hit["accession"] for hit in filtered_results]
+    logger.info(f"Fetching homologs started | {len(filtered_results)}")
     
     try:
         ids = [hit["accession"] for hit in filtered_results]
@@ -330,7 +328,7 @@ def run_pipeline(input_data, input_type="text", file_format="fasta", uniprot_id=
     
     # All files get unique names
     blast_file = "blast_" + session_id + ".xml"
-    filter_results = "filtered_" + session_id + ".txt"
+    filter_path = "filtered_" + session_id + ".txt"
     homologs_file = "homologs_" + session_id + ".fasta"
     alignment_file = "aligned_" + session_id + ".fasta"
     tree_file = "tree_" + session_id + ".ph"
