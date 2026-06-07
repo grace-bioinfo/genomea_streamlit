@@ -3,9 +3,11 @@ __pycache__/
 *.pyc
 *.xml
 *.fasta
-*.json
 *.pim
 *.ph
-*.txt
-temp_sequence.fasta
+temp_*.fasta
+blast_*.xml
+filtered_*.txt
+domain_annotation.json
 knowledge_base.json
+*.log
