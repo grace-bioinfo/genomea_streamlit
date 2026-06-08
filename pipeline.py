@@ -125,7 +125,8 @@ def run_blast(sequence, program="blastp", database="nr"):
         blast_process = NCBIWWW.qblast(
         program=program,
         database=database,
-        sequence=sequence
+        sequence=sequence,
+        hitlist_size=20
     )
     
         with open("blast_results.xml", "w") as f:
@@ -200,7 +201,7 @@ def fetch_homologs(filtered_results):
     logger.info(f"Fetching homologs started | {len(filtered_results)}")
     
     try:
-        ids = [hit["accession"] for hit in filtered_results]
+        ids = [hit["accession"] for hit in filtered_results[:10]]
 
         if len(ids) == 0:
             logger.warning("fetch_homologs called, no ids to fetch")
