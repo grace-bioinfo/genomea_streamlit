@@ -45,7 +45,7 @@ st.title("GenomEA")
 
 st.markdown("### Genomic analysis for East Africa")
 st.divider()
-st.write("GenomEA is a bioinformatics platform built for East African researchers. Upload your protein sequence and get a complete analysis; BLAST search, sequence alignment, phylogenetic tree, domain annotation and an AI-powered summary grounded in East African genomics research. Built on local data, for local science. Starting in Kenya and scaling across the continent.")
+st.write("GenomEA is a bioinformatics platform built for East African research. Upload your protein sequence and get a complete analysis; BLAST search, sequence alignment, phylogenetic tree, domain annotation and an AI-powered summary grounded in East African genomics research. Built on local data, for local science. Starting in Kenya and scaling across the continent.")
 
 col1, col2, col3 = st.columns(3)
 
@@ -162,7 +162,7 @@ with st.sidebar:
     st.markdown("- Analysis")
     st.markdown("- About")
     st.divider()
-    st.write("Decode")
+    st.write("East Africa decoded")
 
 
     

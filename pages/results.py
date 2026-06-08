@@ -61,31 +61,42 @@ else:
 
     with tab4:
         st.subheader("Aligned Sequences")
-        with open(results["alignment"]) as f:
-            st.code(f.read())
-        st.download_button("Download Alignment", open(results["alignment"]).read(), "aligned_sequences.fasta")
+        if not results["alignment"] or not os.path.exists(results["alignment"]):
+            st.warning("Alignment unavailable.")
+        else:
+            with open(results["alignment"]) as f:
+                st.code(f.read())
+            st.download_button("Download Alignment", open(results["alignment"]).read(), "aligned_sequences.fasta")
 
     with tab5:
         st.subheader("Phylogenetic Tree")
-        with open(results["tree"]) as f:
-            st.code(f.read())
-        st.download_button("Download tree", open(results["tree"]).read(), "phylogenetic_tree.ph")
+        if not results["tree"] or not os.path.exists(results["tree"]):
+            st.warning("Phylogenetic tree unavailable.")
+        else:
+            with open(results["tree"]) as f:
+                st.code(f.read())
+            st.download_button("Download tree", open(results["tree"]).read(), "phylogenetic_tree.ph")
 
     with tab6:
         st.subheader("Percent Identity Matrix")
-        with open(results["pim"]) as f:
-            st.code(f.read())
-        st.download_button("Download matrix", open(results["pim"]).read(), "percent_identity.pim")
+        if not results["pim"] or not os.path.exists(results["pim"]):
+            st.warning("Percent identity matrix unavailable.")
+        else:
+            with open(results["pim"]) as f:
+                st.code(f.read())
+            st.download_button("Download matrix", open(results["pim"]).read(), "percent_identity.pim")
 
     with tab7:
         st.subheader("Domain Annotation")
-        st.json(results["domains"])
-        st.download_button(
-            "Download domain annotation",
-            json.dumps(results["domains"], indent=2),
-            "domain_annotation.json"
-        )
-
+        if not results["domains"]:
+            st.warning("Domain annotation unavailable.")
+        else:
+            st.json(results["domains"])
+            st.download_button(
+                "Download domain annotation",
+                json.dumps(results["domains"], indent=2),
+                "domain_annotation.json"
+            )
 
 
 st.divider()
