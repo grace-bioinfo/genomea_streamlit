@@ -165,5 +165,10 @@ with st.sidebar:
     st.write("East Africa decoded")
 
 
+# at the very bottom of genomea.py
+st.markdown("---")
+st.markdown("[Terms of Service](terms) | [Privacy Policy](privacy)")
+
+
     
 
