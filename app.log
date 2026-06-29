@@ -62,3 +62,19 @@
 2026-06-07 12:41:08,410 - INFO - Domain annotation started | uniprot_id: P51587
 2026-06-07 12:41:10,011 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 12
 2026-06-07 12:41:18,171 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-06-29 13:43:26,471 - INFO - BLAST started | program: blastp | database: nr
+2026-06-29 13:46:30,254 - INFO - BLAST complete
+2026-06-29 13:46:32,349 - INFO - Filtering started | file: blast_results.xml | evalue threshold: 0.05 | identity threshold: 95%
+2026-06-29 13:46:32,395 - INFO - Filtering complete | 20
+2026-06-29 13:46:33,402 - INFO - Mapping accession to UniProt | accession: AAB30058
+2026-06-29 13:46:40,336 - ERROR - UniProt mapping failed | string indices must be integers
+2026-06-29 13:46:40,357 - INFO - Fetching homologs started | 20
+2026-06-29 13:46:42,219 - INFO - Homologs fetched and saved | 10 sequences | file: homologs.fasta
+2026-06-29 13:46:44,227 - INFO - Alignment started | file: homologs.fasta
+2026-06-29 13:46:48,304 - INFO - Alignment job submitted | job_id: clustalo-R20260629-114646-0708-3171237-p1m
+2026-06-29 13:46:50,094 - INFO - Alignment status | job_id: clustalo-R20260629-114646-0708-3171237-p1m | status: RUNNING
+2026-06-29 13:47:01,513 - INFO - Alignment status | job_id: clustalo-R20260629-114646-0708-3171237-p1m | status: FINISHED
+2026-06-29 13:47:07,657 - INFO - Alignment complete | job_id: clustalo-R20260629-114646-0708-3171237-p1m | files saved: aligned_sequences.fasta, phylogenetic_tree.ph, percent_identity.pim
+2026-06-29 13:47:08,674 - INFO - Domain annotation started | uniprot_id: P51587
+2026-06-29 13:47:13,893 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 13
+2026-06-29 13:47:26,597 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
