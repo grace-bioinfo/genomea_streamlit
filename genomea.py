@@ -13,25 +13,25 @@ with st.spinner("Loading GenomEA..."):
 
 # LOGIN
 
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
+# if "authenticated" not in st.session_state:
+#     st.session_state.authenticated = False
 
-if not st.session_state.authenticated:
-    password = st.text_input("Enter access password", type="password")
-    expected_password = os.environ.get("APP_PASSWORD")
+# if not st.session_state.authenticated:
+#     password = st.text_input("Enter access password", type="password")
+#     expected_password = os.environ.get("APP_PASSWORD")
 
-    if not password:
-        st.stop()
+#     if not password:
+#         st.stop()
 
-    if hmac.compare_digest(password, expected_password or ""):
-        st.session_state.authenticated = True
-        st.rerun()
+#     if hmac.compare_digest(password, expected_password or ""):
+#         st.session_state.authenticated = True
+#         st.rerun()
         
-    else:
-        st.error("Incorrect password")
-        st.stop()
+#     else:
+#         st.error("Incorrect password")
+#         st.stop()
 
-st.success("Access granted")
+# st.success("Access granted")
 
 # add your title
 st.set_page_config(
