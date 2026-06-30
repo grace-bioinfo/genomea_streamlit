@@ -2,8 +2,8 @@ GenomEA is a bioinformatics platform built for East African researchers. It brin
 What makes GenomEA different is context. Results are interpreted by an AI assistant trained on East African genomics research, so findings are explained in relation to local diseases, populations and published science from the region 
 
 Who is GenomEA For?
-Researchers and scientists
-Graduate students in molecular biology, genetics and related fields
-Research institutions and public health labs
-Anyone working with protein sequences who needs fast, accessible analysis
+Researchers and scientists;
+Graduate students in molecular biology, genetics and related fields;
+Research institutions and public health labs;
+Anyone working with protein sequences who needs fast, accessible analysis;
 
