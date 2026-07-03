@@ -7,3 +7,19 @@ Graduate students in molecular biology, genetics and related fields;
 Research institutions and public health labs;
 Anyone working with protein sequences who needs fast, accessible analysis;
 
+GenomEA runs a 7-step bioinformatics pipeline automatically when you submit a sequence. Each step builds on the previous one;from a raw protein sequence to a complete functional analysis with East African context.
+
+Protein sequence (input)
+        ↓
+BLAST Search-finds similar sequences
+        ↓
+Filtering-keeps only significant hits
+        ↓
+Homolog Fetching-downloads full sequences
+        ↓
+Multiple Sequence Alignment-lines them up
+        ↓
+Domain Annotation-identifies functional regions
+        ↓
+AI Summary-explains everything (output)
+
