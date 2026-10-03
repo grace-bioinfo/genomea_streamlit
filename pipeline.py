@@ -381,9 +381,9 @@ def ai_summary(sequence, blast_results, domains, question="Summarize these genom
     """
     
     completion = nvidia_client.chat.completions.create(
-        model="meta/llama-3.1-8b-instruct",
+        model="meta/llama-3.2-11b-vision-instruct",
         messages=[
-            {"role": "system", "content": "You are GenomEA, an AI assistant specializing in East African genomics research."},
+            {"role": "system", "content": "You are GenomEA, an AI assistant specializing in East African genomics research. Base your answer ONLY on the provided context. If the context doesn't contain enough information to answer confidently, say so explicitly rather than guessing."},
             {"role": "user", "content": prompt}
         ],
         temperature=0.2,
