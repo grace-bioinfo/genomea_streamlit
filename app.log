@@ -78,3 +78,97 @@
 2026-06-29 13:47:08,674 - INFO - Domain annotation started | uniprot_id: P51587
 2026-06-29 13:47:13,893 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 13
 2026-06-29 13:47:26,597 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-03 19:42:25,426 - INFO - BLAST started | program: blastn | database: nr
+2026-10-03 19:45:29,923 - INFO - BLAST complete
+2026-10-03 19:45:31,939 - INFO - Filtering started | file: blast_results.xml | evalue threshold: 0.05 | identity threshold: 95%
+2026-10-03 19:45:32,015 - WARNING - Filtering complete but no hits passed thresholds | file: blast_results.xml
+2026-10-03 19:45:33,030 - INFO - Fetching homologs started | 0
+2026-10-03 19:45:33,030 - WARNING - fetch_homologs called, no ids to fetch
+2026-10-03 19:45:35,037 - INFO - Alignment started | file: None
+2026-10-03 19:45:35,037 - ERROR - Alignment failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-10-03 19:45:36,053 - INFO - Domain annotation started | uniprot_id: P51587
+2026-10-03 19:45:38,263 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 13
+2026-10-03 19:46:00,231 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-03 19:57:32,044 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-03 19:57:44,336 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-03 19:58:17,602 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-04 19:29:56,249 - INFO - BLAST started | program: blastn | database: nr
+2026-10-04 19:31:26,147 - INFO - BLAST complete
+2026-10-04 19:31:28,158 - INFO - Filtering started | file: blast_results.xml | evalue threshold: 0.05 | identity threshold: 95%
+2026-10-04 19:31:28,405 - INFO - Filtering complete | 1
+2026-10-04 19:31:29,437 - INFO - Mapping accession to UniProt | accession: NR_132635
+2026-10-04 19:32:12,715 - ERROR - UniProt mapping failed | ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-10-04 19:32:12,718 - INFO - Fetching homologs started | 1
+2026-10-04 19:32:24,586 - ERROR - Fetching homologs failed | 1 IDs attempted | HTTP Error 400: Bad Request
+2026-10-04 19:32:26,606 - INFO - Alignment started | file: None
+2026-10-04 19:32:26,652 - ERROR - Alignment failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-10-04 19:32:27,667 - INFO - Domain annotation started | uniprot_id: P51587
+2026-10-04 19:32:29,101 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 13
+2026-10-04 19:32:34,520 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-04 19:45:41,437 - INFO - Retrying request to /chat/completions in 0.460950 seconds
+2026-10-04 19:45:53,793 - INFO - Retrying request to /chat/completions in 0.969392 seconds
+2026-10-05 19:47:20,237 - INFO - BLAST started | program: blastn | database: nr
+2026-10-05 19:47:37,315 - ERROR - BLAST failed | program: blastn | database: nr | Remote end closed connection without response
+2026-10-05 19:47:39,342 - INFO - Filtering started | file: None | evalue threshold: 0.05 | identity threshold: 95%
+2026-10-05 19:47:39,343 - ERROR - Filtering failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-10-05 19:47:40,358 - INFO - Fetching homologs started | 0
+2026-10-05 19:47:40,358 - WARNING - fetch_homologs called, no ids to fetch
+2026-10-05 19:47:42,372 - INFO - Alignment started | file: None
+2026-10-05 19:47:42,372 - ERROR - Alignment failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-10-05 19:47:43,391 - INFO - Domain annotation started | uniprot_id: P51587
+2026-10-05 19:47:48,154 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 13
+2026-10-05 19:48:09,089 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-06 19:19:00,429 - INFO - BLAST started | program: blastn | database: nr
+2026-10-06 19:19:27,125 - ERROR - BLAST failed | program: blastn | database: nr | <urlopen error [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond>
+2026-10-06 19:19:29,193 - INFO - Filtering started | file: None | evalue threshold: 0.05 | identity threshold: 95%
+2026-10-06 19:19:29,193 - ERROR - Filtering failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-10-06 19:19:30,200 - INFO - Fetching homologs started | 0
+2026-10-06 19:19:30,200 - WARNING - fetch_homologs called, no ids to fetch
+2026-10-06 19:19:32,206 - INFO - Alignment started | file: None
+2026-10-06 19:19:32,206 - ERROR - Alignment failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-10-06 19:19:33,211 - INFO - Domain annotation started | uniprot_id: P51587
+2026-10-06 19:19:56,710 - ERROR - Could not reach UniProt | uniprot_id: P51587 | HTTPSConnectionPool(host='rest.uniprot.org', port=443): Max retries exceeded with url: /uniprotkb/P51587.json (Caused by ConnectTimeoutError(<HTTPSConnection(host='rest.uniprot.org', port=443) at 0x229c2a5b310>, 'Connection to rest.uniprot.org timed out. (connect timeout=None)'))
+2026-10-06 19:20:13,021 - INFO - Retrying request to /chat/completions in 0.422229 seconds
+2026-10-06 19:20:23,477 - INFO - Retrying request to /chat/completions in 0.782704 seconds
+2026-10-07 16:32:23,801 - INFO - BLAST started | program: blastn | database: nr
+2026-10-07 16:33:32,320 - INFO - BLAST complete
+2026-10-07 16:33:34,339 - INFO - Filtering started | file: blast_results.xml | evalue threshold: 0.05 | identity threshold: 95%
+2026-10-07 16:33:34,602 - INFO - Filtering complete | 1
+2026-10-07 16:33:35,639 - INFO - Mapping accession to UniProt | accession: NR_132635
+2026-10-07 16:34:19,926 - WARNING - No UniProt mapping found for: NR_132635
+2026-10-07 16:34:19,980 - INFO - Fetching homologs started | 1
+2026-10-07 16:34:21,131 - ERROR - Fetching homologs failed | 1 IDs attempted | HTTP Error 400: Bad Request
+2026-10-07 16:34:23,151 - INFO - Alignment started | file: None
+2026-10-07 16:34:23,198 - ERROR - Alignment failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-10-07 16:34:24,205 - INFO - Domain annotation started | uniprot_id: P51587
+2026-10-07 16:34:26,542 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 13
+2026-10-07 16:34:46,691 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-07 17:00:13,111 - INFO - BLAST started | program: blastn | database: nr
+2026-10-07 18:23:02,533 - ERROR - BLAST failed | program: blastn | database: nr | <urlopen error [Errno 11001] getaddrinfo failed>
+2026-10-08 10:47:34,552 - INFO - BLAST started | program: blastn | database: nr
+2026-10-08 10:49:43,185 - INFO - BLAST complete
+2026-10-08 10:49:45,239 - INFO - Filtering started | file: blast_results.xml | evalue threshold: 0.05 | identity threshold: 95%
+2026-10-08 10:49:45,293 - INFO - Filtering complete | 21
+2026-10-08 10:49:46,310 - INFO - Mapping accession to UniProt | accession: KR063673
+2026-10-08 10:50:26,667 - WARNING - No UniProt mapping found for: KR063673
+2026-10-08 10:50:26,683 - INFO - Fetching homologs started | 21
+2026-10-08 10:50:28,184 - ERROR - Fetching homologs failed | 10 IDs attempted | HTTP Error 400: Bad Request
+2026-10-08 10:50:30,202 - INFO - Alignment started | file: None
+2026-10-08 10:50:30,204 - ERROR - Alignment failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-10-08 10:50:31,219 - INFO - Domain annotation started | uniprot_id: P51587
+2026-10-08 10:50:32,952 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 13
+2026-10-08 10:50:52,365 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-10-12 13:31:48,267 - INFO - BLAST started | program: blastn | database: nr
+2026-10-12 13:33:57,249 - INFO - BLAST complete
+2026-10-12 13:33:59,270 - INFO - Filtering started | file: blast_results.xml | evalue threshold: 0.05 | identity threshold: 95%
+2026-10-12 13:33:59,318 - INFO - Filtering complete | 21
+2026-10-12 13:34:00,336 - INFO - Mapping accession to UniProt | accession: KR063673
+2026-10-12 13:34:42,968 - WARNING - No UniProt mapping found for: KR063673
+2026-10-12 13:34:42,976 - INFO - Fetching homologs started | 21
+2026-10-12 13:35:37,180 - ERROR - Fetching homologs failed | 10 IDs attempted | <urlopen error [Errno 11001] getaddrinfo failed>
+2026-10-12 13:35:39,194 - INFO - Alignment started | file: None
+2026-10-12 13:35:39,194 - ERROR - Alignment failed | file: None | expected str, bytes or os.PathLike object, not NoneType
+2026-10-12 13:35:40,206 - INFO - Domain annotation started | uniprot_id: P51587
+2026-10-12 13:35:41,127 - INFO - Domain annotation complete | uniprot_id: P51587 | domains found: 13
+2026-10-12 13:35:44,278 - INFO - Retrying request to /chat/completions in 0.445808 seconds
+2026-10-12 13:35:44,728 - INFO - Retrying request to /chat/completions in 0.857382 seconds
